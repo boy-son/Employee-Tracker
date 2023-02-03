@@ -111,3 +111,69 @@ Prompt1();
 )    
 }
 
+const roleArray = [];
+function roleSelection() {
+db.query('SELECT * FROM role', function(err, res) {
+for (let i = 0; i < res.length; i++) {
+    roleArray.push(array[i].title);   
+}    
+})
+return roleArray;
+}
+
+
+const managerArray = [];
+function managerSelection() {
+db.query('Select first_name, last_name FROM employees WHERE manager_id is NULL', function(err, res){
+if(err) throw err
+for (let i = 0; i < res.length; i++) {
+    managerArray.push(array[i].first_name);
+    
+}    
+})  
+return managerArray;  
+}
+
+function addEmployee() {
+inquirer.prompt([
+{
+name: 'firstname',
+type: 'input',
+message: "Enter your first name"
+},
+{
+name: 'lastname',
+type: "input",
+message: "Enter your last name"    
+},
+{
+name: "role",
+type: "list",
+message: "Please choose a role: ",
+choices: roleSelection()    
+},
+{
+name: "manager",
+type: "rawlist",
+message: "What's the manager's name?",
+choices: managerSelection()
+},
+
+]) .then(function(val) {
+const roleID = roleSelection().indexOf(val.role) + 1
+const managerID = managerSelection().indexOf(val.manager) + 1
+db.query("INSERT INTO employee SET ?",
+{
+first_name: val.firstname,
+last_name: val.lastname,
+manager_id = managerID,
+role_id = roleID    
+}, function(err) {
+if (err) throw err
+console.table(val)
+Prompt1();    
+})
+})    
+}
+
+
