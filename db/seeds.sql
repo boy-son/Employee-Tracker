@@ -18,6 +18,8 @@ VALUES
         ("Mark", "Hoppus", 4, 1),
         ("John", "Johnson", 1, NULL),
         ("Lucas", "Baker", 2, 3),
+        ("Brutus", "Gardner", 3, NULL)
         ("Ferdinand", "Franz", 3, 2),
+        ("Howard", "Parker", 2, NULL),
         ("Harriet", "Pursley", 1, 3);
 
