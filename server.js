@@ -1,8 +1,6 @@
 const express = require('express');
 const mySQL = require('mysql2');
 const inquirer = require('inquirer');
-const { createConnection } = require('net');
-const { allowedNodeEnvironmentFlags } = require('process');
 require('console.table');
 const app = express();
 
@@ -176,4 +174,97 @@ Prompt1();
 })    
 }
 
+function updateEmployee() {
+db.query('SELECT employees.last_name, role.title FROM employees JOIN role ON employees.role_id = role.id;', 
+function(err,res) {
+if(err) throw err
+console.log(res)
+inquirer.prompt([
+{
+    name:'lastName',
+    type: "rawlist",
+    choices: function() {
+    const lastName = [];
+    for (let i = 0; i < res.length; i++) {
+        lastName.push(res[i].last_name);      
+    }
+    return lastName    
+    },
+ message: 'What is the employees last name?'   
+},
+{
+name:'role',
+type: 'rawlist',
+message: "What is the employees new title?",
+choices: roleSelection()    
+},  
+]).then(function(val) {
+const roleID = roleSelection().indexOf(val.role) + 1
+db.query("UPDATE employees SET WHERE ?"),
+{
+  last_name: val.lastName  
+},
+{
+role_id: roleID    
+},
+function(err){
+    if (err) throw err
+    console.table(val)
+    Prompt1()   
+}    
+})
+})    
+}
+
+function addRole() {
+db.query('SELECT role.title AS Title, role.salary AS Salary FROM Role', function(err,res) {
+inquirer.prompt([
+{
+ name: "Title",
+ type: "input",
+ message: "What is the role's title?"   
+},
+{
+ name: "Salary",
+ type: "input",
+ message: "What is the role's salary?"
+}    
+]).then(function(res) {
+db.query("INSERT INTO role SET ?",
+{
+  title: res.Title,
+  salary: res.Salary,
+},
+function(err) {
+if(err) throw err
+console.table(res);
+Prompt1();
+}
+)    
+})   
+})    
+}
+
+
+function addDepartment() {
+inquirer.prompt ([
+{
+  name: 'Department',
+  type: 'input',
+  message: "What department would you like to add?"
+},
+
+]).then(function(res) {
+db.query("INSERT INTO department SET ?",
+{
+  name: res.name  
+},
+function(err) {
+if(err) throw err
+console.table(res);
+Prompt1();    
+}
+)
+})
+}
 
