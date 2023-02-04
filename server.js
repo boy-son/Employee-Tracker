@@ -30,11 +30,12 @@ name: "choice",
 message: "Please navigate to the menu of your choosing.",
 choices: [
 "All Employees",
-"Employees By Department",
 "Add Employee",
-"Remove Employee",
+"Employees By Department",
 "Update Employee Role",
+"View All Roles",
 "Add Role",
+"Add Department",
 "End"]     
 })
 
@@ -44,20 +45,20 @@ case "All Employees":
 allEmployees();
 break;
 
-case "Employees By Department":
-byDepartment();
-break;
-
-case "View All Roles":
-allRoles();
-break;
-
 case "Add Employee":
 addEmployee();
 break;
 
+case "Employees By Department":
+byDepartment();
+break;
+
 case "Update Employee Role":
 updateEmployee();
+break;
+
+case "View All Roles":
+allRoles();
 break;
 
 case "Add Role":
@@ -113,7 +114,7 @@ const roleArray = [];
 function roleSelection() {
 db.query('SELECT * FROM role', function(err, res) {
 for (let i = 0; i < res.length; i++) {
-    roleArray.push(array[i].title);   
+    roleArray.push(res[i].title);   
 }    
 })
 return roleArray;
@@ -125,7 +126,7 @@ function managerSelection() {
 db.query('Select first_name, last_name FROM employee WHERE manager_id is NULL', function(err, res){
 if(err) throw err
 for (let i = 0; i < res.length; i++) {
-    managerArray.push(array[i].first_name);
+    managerArray.push(res[i].first_name);
     
 }    
 })  
@@ -148,13 +149,13 @@ message: "Enter your last name",
 name: "role",
 type: "list",
 message: "Please choose a role: ",
-choices: roleSelection()    
+choices: roleSelection(),    
 },
 {
 name: "manager",
 type: "rawlist",
 message: "What's the manager's name?",
-choices: managerSelection()
+choices: managerSelection(),
 },
 
 ]).then(function(val) {
@@ -202,20 +203,19 @@ choices: roleSelection()
 },  
 ]).then(function(val) {
 const roleID = roleSelection().indexOf(val.role) + 1
-db.query("UPDATE employee SET WHERE ?"),
+db.query("UPDATE employee SET WHERE ?",
 {
-  last_name: val.lastName  
-},
-{
-role_id: roleID    
+  last_name: val.lastName,
+  role_id: roleID   
 },
 function(err){
-    if (err) throw err
-    console.table(val)
+    if (err) throw err;
+    console.table(val);
+    console.log("Employee Updated!");
     Prompt1()   
-}    
-})
 })    
+});
+});   
 }
 
 function addRole() {
