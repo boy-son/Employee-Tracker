@@ -199,14 +199,14 @@ inquirer.prompt([
 name:'role',
 type: 'rawlist',
 message: "What is the employees new title?",
-choices: roleSelection()    
+choices: roleSelection(),    
 },  
 ]).then(function(val) {
-const roleID = roleSelection().indexOf(val.role) + 1
+const roleID = roleSelection().indexOf(val.role) + 1;
 db.query("UPDATE employee SET WHERE ?",
 {
   last_name: val.lastName,
-  role_id: roleID   
+  role_id: roleID,   
 },
 function(err){
     if (err) throw err;
