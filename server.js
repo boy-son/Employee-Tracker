@@ -41,6 +41,7 @@ choices: [
 
 .then(function(val) {
 switch (val.choice) {
+
 case "All Employees":
 allEmployees();
 break;
@@ -81,7 +82,7 @@ break;
 
 function allEmployees() {
 console.log('Viewing Employees');
-db.query(`SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(employee.first_name, ' ' , employee.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id LEFT JOIN employee e on employee.manager_id = e.id;`,
+db.query(`SELECT * FROM employee`,
 function(err, res) {
 if (err) throw err
 console.table(res)
@@ -203,17 +204,14 @@ choices: roleSelection(),
 },  
 ]).then(function(val) {
 const roleID = roleSelection().indexOf(val.role) + 1;
-db.query("UPDATE employee SET WHERE ?",
-{
-  last_name: val.lastName,
-  role_id: roleID,   
-},
-function(err){
+db.query('UPDATE employee SET role_id = ? WHERE last_name = ?',
+[roleID, val.lastName],
+function(err, val){
     if (err) throw err;
     console.table(val);
     console.log("Employee Updated!");
     Prompt1()   
-})    
+});    
 });
 });   
 }

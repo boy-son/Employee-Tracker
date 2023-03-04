@@ -16,7 +16,7 @@ title VARCHAR(30) NULL,
 salary DECIMAL NULL,
 department_id INT NULL,
 PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE employee (
 id INT NOT NULL AUTO_INCREMENT,
