@@ -14,12 +14,19 @@ VALUES
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
+    ("John", "Doe", 1, NULL),
+    ("Jane", "Doe", 2, NULL),
+    ("Bob", "Smith", 3, NULL),
+    ("Craig", "Roberts", 4, NULL);
 
-        ("Mark", "Hoppus", 4, 1),
-        ("John", "Johnson", 1, NULL),
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES
+
+        ("Mark", "Hoppus", 4, 4),
+        ("John", "Johnson", 1, 1),
         ("Lucas", "Baker", 2, 2),
-        ("Brutus", "Gardner", 3, NULL),
-        ("Ferdinand", "Franz", 3, 3),
-        ("Howard", "Parker", 2, NULL),
-        ("Harriet", "Pursley", 1, 4);
+        ("Brutus", "Gardner", 3, 3),
+        ("Ferdinand", "Franz", 3, 4),
+        ("Howard", "Parker", 2, 2),
+        ("Harriet", "Pursley", 2, 2);
 

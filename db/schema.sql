@@ -15,6 +15,7 @@ id INT NOT NULL AUTO_INCREMENT,
 title VARCHAR(30) NULL,
 salary DECIMAL NULL,
 department_id INT NULL,
+FOREIGN KEY (department_id) REFERENCES department(id),
 PRIMARY KEY (id)
 );
 
@@ -23,6 +24,8 @@ id INT NOT NULL AUTO_INCREMENT,
 first_name VARCHAR(30) NULL,
 last_name VARCHAR(30) NULL,
 role_id INT NULL,
+FOREIGN KEY (role_id) REFERENCES role(id),
 manager_id INT NULL,
+FOREIGN KEY (manager_id) REFERENCES employee(id),
 PRIMARY KEY (id)
-)
+);

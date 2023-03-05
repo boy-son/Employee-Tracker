@@ -82,7 +82,7 @@ break;
 
 function allEmployees() {
 console.log('Viewing Employees');
-db.query(`SELECT * FROM employee`,
+db.query(`SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, CONCAT(m.first_name, ' ', m.last_name) AS manager FROM employee e JOIN role r ON e.role_id = r.id JOIN department d ON r.department_id = d.id LEFT JOIN employee m ON e.manager_id = m.id`,
 function(err, res) {
 if (err) throw err
 console.table(res)
@@ -102,6 +102,7 @@ Prompt1();
 }
 
 function allRoles() {
+console.log('Viewing Employees By Role');
 db.query('SELECT employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role on employee.role_id = role.id;',
 function (err,res) {
 if (err) throw err
@@ -217,7 +218,7 @@ function(err, val){
 }
 
 function addRole() {
-db.query('SELECT role.title AS Title, role.salary AS Salary FROM Role', function(err,res) {
+db.query('SELECT department.id, department.name FROM Department', function(err,res) {
 inquirer.prompt([
 {
  name: "Title",
@@ -228,12 +229,26 @@ inquirer.prompt([
  name: "Salary",
  type: "input",
  message: "What is the role's salary?"
+},
+{
+  name: "Department",
+  type: "rawlist",
+  message: "What is the department's name?",
+  choices: function() {
+    const department = [];
+    for (let i = 0; i < res.length; i++) {
+        department.push(res[i].name);
+    }
+    return department;
+  }
 }    
 ]).then(function(res) {
+const departmentID = res.Department.indexOf(res.Department) + 1;
 db.query("INSERT INTO role SET ?",
 {
   title: res.Title,
   salary: res.Salary,
+  department_id: departmentID,
 },
 function(err) {
 if(err) throw err
@@ -257,7 +272,7 @@ inquirer.prompt ([
 ]).then(function(res) {
 db.query("INSERT INTO department SET ?",
 {
-  name: res.name  
+  name: res.Department,
 },
 function(err) {
 if(err) throw err
